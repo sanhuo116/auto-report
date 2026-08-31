@@ -1,0 +1,13 @@
+.env
+.data/
+runtime/
+node_modules/
+__pycache__/
+scripts/__pycache__/
+*.pyc
+*.docx
+*.pdf
+.DS_Store
+lark-auth*.png
+feishu-upload-auth-qr.png
+*数据备份*.json

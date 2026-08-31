@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f5f7fb" />
+    <title>政企部项目自动化巡检</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">
+            <img src="./assets/enterprise-ai-inspection.png" alt="政企部AI巡检中心" />
+          </div>
+          <div>
+            <strong>政企部AI巡检中心</strong>
+          </div>
+        </div>
+
+        <div class="workspace-label">工作台</div>
+        <nav class="main-nav" aria-label="主导航">
+          <button class="nav-item active" type="button" data-page="submit">
+            <span class="nav-icon">＋</span>
+            <span>需求提交</span>
+          </button>
+          <button class="nav-item" type="button" data-page="reports">
+            <span class="nav-icon">▤</span>
+            <span>报告提取</span>
+          </button>
+        </nav>
+
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="breadcrumb">
+            <span>工作台</span>
+            <span class="breadcrumb-separator">/</span>
+            <strong id="breadcrumb-current">需求提交</strong>
+          </div>
+          <div class="topbar-actions">
+            <span class="today-label">2026年08月25日 星期二</span>
+            <button class="icon-button notification-button" type="button" aria-label="通知">
+              <span class="notification-dot"></span>
+              ♧
+            </button>
+          </div>
+        </header>
+
+        <section class="page page-submit active" data-page-view="submit">
+          <div class="page-heading">
+            <div>
+              <div class="eyebrow">NEW REQUEST</div>
+              <h1>提交巡检需求</h1>
+              <p>填写本次巡检的基础信息，提交后系统将自动生成分析报告。</p>
+            </div>
+            <div class="heading-note">
+              <span class="status-dot green"></span>
+              服务运行正常
+            </div>
+          </div>
+
+          <div class="content-grid">
+            <form class="form-panel" id="request-form">
+              <div class="panel-header">
+                <div>
+                  <h2>需求信息</h2>
+                  <p>带 <span class="required">*</span> 的字段为必填项</p>
+                </div>
+                <span class="form-step">01 / 01</span>
+              </div>
+
+              <div class="form-body">
+                <fieldset class="field-group">
+                  <legend>业务场景 <span class="required">*</span></legend>
+                  <div class="scenario-options">
+                    <label class="scenario-option selected">
+                      <input type="radio" name="scenario" value="文本" checked />
+                      <span class="scenario-icon text-icon">文</span>
+                      <span class="scenario-copy">
+                        <strong>文本</strong>
+                        <small>适用于文本通话记录</small>
+                      </span>
+                      <span class="radio-check"></span>
+                    </label>
+                    <label class="scenario-option">
+                      <input type="radio" name="scenario" value="语音 - SaaS" />
+                      <span class="scenario-icon voice-icon">◖</span>
+                      <span class="scenario-copy">
+                        <strong>语音 - SaaS</strong>
+                        <small>百应星球 SaaS 线路</small>
+                      </span>
+                      <span class="radio-check"></span>
+                    </label>
+                    <label class="scenario-option">
+                      <input type="radio" name="scenario" value="语音 - 私有化" />
+                      <span class="scenario-icon private-icon">⌁</span>
+                      <span class="scenario-copy">
+                        <strong>语音 - 私有化</strong>
+                        <small>私有化部署线路</small>
+                      </span>
+                      <span class="radio-check"></span>
+                    </label>
+                  </div>
+                </fieldset>
+
+                <fieldset class="field-group">
+                  <legend>选择巡检模板 <span class="required">*</span></legend>
+                  <div class="template-options" id="template-options">
+                    <label class="template-option" data-template-id="saas-general" data-scenario="语音 - SaaS" hidden>
+                      <input type="radio" name="template" value="saas-general" />
+                      <span class="template-icon saas-template-icon">S</span>
+                      <span class="template-copy">
+                        <strong>通用模板</strong>
+                        <small>适用于语音 SaaS 场景</small>
+                        <em>Codex 任务：语音saas巡检</em>
+                        <code>saas-xunjian-tongyong</code>
+                      </span>
+                      <span class="template-state">切换场景后可用</span>
+                      <span class="radio-check"></span>
+                    </label>
+                    <label class="template-option selected" data-template-id="hangzhou-shebao" data-scenario="文本">
+                      <input type="radio" name="template" value="hangzhou-shebao" checked />
+                      <span class="template-icon hangzhou-template-icon">杭</span>
+                      <span class="template-copy">
+                        <strong>杭州社保</strong>
+                        <small>适用于文本场景</small>
+                        <em>Codex 任务：杭州社保巡检</em>
+                        <code>hangzhoushebao-report</code>
+                      </span>
+                      <span class="template-state">当前匹配</span>
+                      <span class="radio-check"></span>
+                    </label>
+                    <label class="template-option" data-template-id="text-project" data-scenario="文本">
+                      <input type="radio" name="template" value="text-project" />
+                      <span class="template-icon text-project-template-icon">文</span>
+                      <span class="template-copy">
+                        <strong>文本项目通用模板</strong>
+                        <small>适用于文本客服/聊天机器人</small>
+                        <em>Codex 任务：文本项目巡检报告</em>
+                        <code>chatbot-xjbg</code>
+                      </span>
+                      <span class="template-state">可选择</span>
+                      <span class="radio-check"></span>
+                    </label>
+                    <label class="template-option" data-template-id="yuhang-shebao" data-scenario="语音 - 私有化" hidden>
+                      <input type="radio" name="template" value="yuhang-shebao" />
+                      <span class="template-icon yuhang-template-icon">余</span>
+                      <span class="template-copy">
+                        <strong>余杭社保</strong>
+                        <small>适用于语音私有化场景</small>
+                        <em>Codex 任务：余杭社保巡检</em>
+                        <code>yuhangshebao-report</code>
+                      </span>
+                      <span class="template-state">切换场景后可用</span>
+                      <span class="radio-check"></span>
+                    </label>
+                  </div>
+                  <p class="field-hint">选择后，系统将按照对应 skill 生成巡检报告。</p>
+                </fieldset>
+
+                <div class="two-column-fields">
+                  <label class="field-group">
+                    <span class="field-label">租户名称 <span class="required">*</span></span>
+                    <div class="input-wrap">
+                      <span class="input-prefix">▦</span>
+                      <input id="tenant-name" name="tenant" type="text" placeholder="请输入或选择租户名称" list="tenant-list" required />
+                      <span class="input-chevron">⌄</span>
+                    </div>
+                    <datalist id="tenant-list">
+                      <option value="鄞州公安"></option>
+                      <option value="晋江公安"></option>
+                      <option value="杭州人社"></option>
+                      <option value="余杭人社"></option>
+                    </datalist>
+                  </label>
+
+                  <fieldset class="field-group">
+                    <legend>报告周期 <span class="required">*</span></legend>
+                    <div class="date-range">
+                      <div class="date-input">
+                        <input id="start-date" type="date" value="2026-08-01" required />
+                      </div>
+                      <span class="date-divider">至</span>
+                      <div class="date-input">
+                        <input id="end-date" type="date" value="2026-08-25" required />
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+
+                <div class="field-group">
+                    <div class="field-label">通话记录/巡检资料上传 <span class="required">*</span></div>
+                    <div class="upload-zone" id="upload-zone">
+                    <input id="file-input" type="file" accept=".xlsx,.xls,.csv,.txt,.wav,.mp3,.png,.jpg,.jpeg,.docx,.pdf,.zip" multiple />
+                    <div class="upload-illustration">
+                      <span class="upload-arrow">↑</span>
+                    </div>
+                    <div class="upload-copy">
+                      <strong>点击上传或将文件拖拽至此处</strong>
+                      <span>支持 Excel、CSV、TXT、WAV、MP3、PNG、JPG、DOCX、PDF、ZIP 等格式，单个文件不超过 200MB</span>
+                    </div>
+                    <button class="small-button" type="button" id="choose-file">选择文件</button>
+                  </div>
+                  <div class="file-list" id="file-list" aria-live="polite"></div>
+                </div>
+
+                <label class="field-group">
+                  <span class="field-label">备注 <span class="optional">选填</span></span>
+                  <textarea id="remarks" placeholder="补充本次巡检的特殊要求，例如：重点关注转人工失败的通话记录……"></textarea>
+                  <div class="textarea-footer">
+                    <span>可自定义编辑</span>
+                    <span id="char-count">0 / 500</span>
+                  </div>
+                </label>
+              </div>
+
+              <div class="form-footer">
+                <span class="secure-tip"><span>◆</span> 数据仅用于本次巡检分析</span>
+                <button class="primary-button" type="submit">
+                  <span>提交巡检需求</span>
+                  <span class="button-arrow">→</span>
+                </button>
+              </div>
+            </form>
+
+            <aside class="side-column">
+              <div class="info-panel">
+                <div class="info-panel-title">
+                  <h3>提交流程</h3>
+                  <span class="mini-tag">3 STEPS</span>
+                </div>
+                <div class="process-list">
+                  <div class="process-item current">
+                    <span class="process-number">1</span>
+                    <div>
+                      <strong>填写需求</strong>
+                      <span>完善巡检的基本信息</span>
+                    </div>
+                  </div>
+                  <div class="process-line"></div>
+                  <div class="process-item">
+                    <span class="process-number">2</span>
+                    <div>
+                      <strong>系统制作</strong>
+                      <span>自动分析并生成报告</span>
+                    </div>
+                  </div>
+                  <div class="process-line"></div>
+                  <div class="process-item">
+                    <span class="process-number">3</span>
+                    <div>
+                      <strong>下载报告</strong>
+                      <span>在报告提取中查看结果</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tip-panel">
+                <span class="tip-icon">i</span>
+                <div>
+                  <strong>小提示</strong>
+                  <p>上传的通话记录将按照文件名和时间自动归档，建议一次提交同一业务场景下的完整记录。</p>
+                </div>
+              </div>
+
+              <div class="destination-panel">
+                <span class="destination-icon">↗</span>
+                <div>
+                  <strong>报告自动归档</strong>
+                  <p>报告生成完成后，由后端上传 DOCX 并写入飞书多维表格。</p>
+                  <span class="destination-status"><span class="status-dot green"></span> 归档状态见报告列表</span>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="page page-reports" data-page-view="reports">
+          <div class="page-heading reports-heading">
+            <div>
+              <div class="eyebrow">REPORT CENTER</div>
+              <h1>报告提取</h1>
+              <p>查看巡检任务的生成进度，下载已完成的分析报告。</p>
+            </div>
+            <button class="secondary-button" type="button" id="new-request">
+              <span class="plus-symbol">＋</span>
+              新建需求
+            </button>
+          </div>
+
+          <div class="metric-row">
+            <div class="metric-item">
+              <span class="metric-label">全部报告</span>
+              <strong id="all-count">4</strong>
+              <span class="metric-change">累计提交</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">制作中</span>
+              <strong id="processing-count">1</strong>
+              <span class="metric-change neutral">正在处理</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">已成功</span>
+              <strong id="success-count">2</strong>
+              <span class="metric-change positive">可下载</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">失败</span>
+              <strong id="failed-count">1</strong>
+              <span class="metric-change negative">需重新提交</span>
+            </div>
+          </div>
+
+          <div class="table-panel">
+            <div class="table-toolbar">
+              <div class="filter-tabs" role="tablist" aria-label="报告状态筛选">
+                <button class="filter-tab active" type="button" data-filter="all">全部 <span>4</span></button>
+                <button class="filter-tab" type="button" data-filter="processing">制作中 <span>1</span></button>
+                <button class="filter-tab" type="button" data-filter="success">成功 <span>2</span></button>
+                <button class="filter-tab" type="button" data-filter="failed">失败 <span>1</span></button>
+              </div>
+              <div class="table-tools">
+                <label class="search-box">
+                  <span>⌕</span>
+                  <input id="report-search" type="search" placeholder="搜索租户或报告名称" />
+                </label>
+                <button class="icon-button outlined" type="button" aria-label="刷新列表" id="refresh-reports">↻</button>
+              </div>
+            </div>
+
+            <div class="report-table-wrap">
+              <table class="report-table">
+                <thead>
+                  <tr>
+                    <th>报告名称</th>
+                    <th>业务场景</th>
+                    <th>巡检模板</th>
+                    <th>报告周期</th>
+                    <th>生成时间</th>
+                    <th>状态</th>
+                    <th class="align-right">操作</th>
+                  </tr>
+                </thead>
+                <tbody id="report-table-body"></tbody>
+              </table>
+              <div class="empty-state" id="empty-state" hidden>
+                <span class="empty-icon">⌕</span>
+                <strong>没有匹配的报告</strong>
+                <span>试试其他关键词或状态筛选</span>
+              </div>
+            </div>
+            <div class="table-footer">
+              <span id="table-result-count">共 4 条报告</span>
+              <span>最近更新于 2 分钟前</span>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status">
+      <span class="toast-icon">✓</span>
+      <span id="toast-message">已提交</span>
+    </div>
+    <div class="auth-modal-backdrop" id="auth-modal" hidden>
+      <section class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+        <div class="auth-modal-header">
+          <div>
+            <div class="eyebrow">API AUTHENTICATION</div>
+            <h2 id="auth-title">接口认证已失效</h2>
+          </div>
+          <button class="icon-button auth-close" type="button" aria-label="关闭认证窗口">×</button>
+        </div>
+        <p class="auth-modal-copy">请输入后端签发的 Bearer Token，保存后会自动重试刚才的操作。</p>
+        <label class="auth-token-label" for="auth-token">Bearer Token</label>
+        <input class="auth-token-input" id="auth-token" type="password" autocomplete="off" placeholder="粘贴 Token，不要包含 Bearer 前缀" />
+        <div class="auth-modal-footer">
+          <span>仅保存在当前浏览器</span>
+          <button class="primary-button" type="button" id="save-auth-token">保存并重试</button>
+        </div>
+      </section>
+    </div>
+    <script>
+      window.INSPECTION_API_CONFIG = {
+        baseUrl: "",
+        submitPath: "/api/inspection-requests",
+        reportsPath: "/api/inspection-reports",
+        retryPath: "/api/inspection-requests/:id/retry",
+        archivePath: "/api/inspection-reports/:id/archive",
+        downloadPath: "/api/inspection-reports/:id/download",
+        fileFieldName: "files",
+        authToken: "",
+        tokenStorageKey: "inspectionApiToken",
+        feishuDestination: {
+          type: "feishu-bitable",
+          wikiUrl: "https://byaitech.feishu.cn/wiki/VMOGwc4cAivY0hkPtIzcfP7jnHh?table=tblfCjtJ4uImwNyi&view=vew4bWEOlm",
+          tableId: "tblfCjtJ4uImwNyi",
+          viewId: "vew4bWEOlm",
+          fields: {
+            tenant: "客户名称",
+            period: "巡检报告周期",
+            report: "巡检报告",
+          },
+        },
+      };
+    </script>
+    <script src="./app.js"></script>
+  </body>
+</html>
