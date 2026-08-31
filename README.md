@@ -28,6 +28,10 @@ python3 server.py
 
 ## 自动上传代码
 
-网页服务启动后会在后台每 60 秒检查仓库根目录的代码变更，并自动提交推送到 GitHub `main` 分支。运行数据、上传文件和生成报告保存在本地 `runtime/`，不会提交。
+网页服务启动后会在后台每 60 秒检查当前仓库的代码变更，并自动提交推送到 GitHub `main` 分支。运行数据、上传文件和生成报告保存在本地 `runtime/`，不会提交。
 
-根目录的 `scripts/auto-sync-github.sh` 是仓库级同步脚本；`launchd/` 中保留了后台同步配置。
+同步脚本为 `scripts/auto-sync-github.sh`；`launchd/` 中保留了后台同步配置。
+
+远程仓库：
+
+`https://github.com/sanhuo116/auto-report`
