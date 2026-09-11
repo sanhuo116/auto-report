@@ -26,6 +26,14 @@ python3 server.py
 
 打开 `http://127.0.0.1:4174/`。
 
+macOS 可使用 `launchd/com.zhuyanzhu.auto-report-server.plist` 配置服务开机启动并在异常退出后自动重启：
+
+```bash
+mkdir -p ~/Library/LaunchAgents
+cp launchd/com.zhuyanzhu.auto-report-server.plist ~/Library/LaunchAgents/
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.zhuyanzhu.auto-report-server.plist
+```
+
 ## 自动上传代码
 
 网页服务启动后会在后台每 60 秒检查当前仓库的代码变更，并自动提交推送到 GitHub `main` 分支。运行数据、上传文件和生成报告保存在本地 `runtime/`，不会提交。

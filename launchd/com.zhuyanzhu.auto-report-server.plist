@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.zhuyanzhu.auto-report-server</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/bin/python3</string>
+    <string>/Users/zhuyanzhu/Documents/ChatGPT/自动巡检平台/auto-report/server.py</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>/Users/zhuyanzhu/Documents/ChatGPT/自动巡检平台/auto-report</string>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>ThrottleInterval</key>
+  <integer>10</integer>
+  <key>StandardOutPath</key>
+  <string>/Users/zhuyanzhu/Documents/ChatGPT/自动巡检平台/auto-report/runtime/server-launchd.out.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/zhuyanzhu/Documents/ChatGPT/自动巡检平台/auto-report/runtime/server-launchd.err.log</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PYTHONUNBUFFERED</key>
+    <string>1</string>
+    <key>TZ</key>
+    <string>Asia/Shanghai</string>
+  </dict>
+</dict>
+</plist>
