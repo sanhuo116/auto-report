@@ -7,10 +7,10 @@
   <key>ProgramArguments</key>
   <array>
     <string>/usr/bin/python3</string>
-    <string>/Users/zhuyanzhu/Documents/ChatGPT/自动巡检平台/auto-report/server.py</string>
+    <string>/Users/zhuyanzhu/auto-report/server.py</string>
   </array>
   <key>WorkingDirectory</key>
-  <string>/Users/zhuyanzhu/Documents/ChatGPT/自动巡检平台/auto-report</string>
+  <string>/Users/zhuyanzhu/auto-report</string>
   <key>RunAtLoad</key>
   <true/>
   <key>KeepAlive</key>
@@ -18,9 +18,9 @@
   <key>ThrottleInterval</key>
   <integer>10</integer>
   <key>StandardOutPath</key>
-  <string>/Users/zhuyanzhu/Documents/ChatGPT/自动巡检平台/auto-report/runtime/server-launchd.out.log</string>
+  <string>/Users/zhuyanzhu/auto-report/runtime/server-launchd.out.log</string>
   <key>StandardErrorPath</key>
-  <string>/Users/zhuyanzhu/Documents/ChatGPT/自动巡检平台/auto-report/runtime/server-launchd.err.log</string>
+  <string>/Users/zhuyanzhu/auto-report/runtime/server-launchd.err.log</string>
   <key>EnvironmentVariables</key>
   <dict>
     <key>PYTHONUNBUFFERED</key>
