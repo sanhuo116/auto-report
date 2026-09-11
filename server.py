@@ -147,6 +147,17 @@ def parse_object(value) -> dict:
     return parsed if isinstance(parsed, dict) else {}
 
 
+def resolve_report_path(task: dict) -> Path | None:
+    raw_path = task.get("reportPath")
+    if not raw_path:
+        return None
+    report_path = Path(raw_path)
+    if report_path.exists():
+        return report_path
+    migrated_path = REPORTS / report_path.name
+    return migrated_path if migrated_path.exists() else report_path
+
+
 def feishu_request(
     method: str,
     path: str,
@@ -327,10 +338,12 @@ def archive_task(task_id: str) -> None:
     task = next((item for item in read_tasks() if item["id"] == task_id), None)
     if not task:
         return
-    report_path = Path(task["reportPath"]) if task.get("reportPath") else None
+    report_path = resolve_report_path(task)
     if not report_path or not report_path.exists():
         update_task(task_id, feishuSyncStatus="归档失败", feishuError="报告文件不存在")
         return
+    if str(report_path) != task.get("reportPath"):
+        task = update_task(task_id, reportPath=str(report_path)) or task
     update_task(task_id, feishuSyncStatus="归档中", feishuError="")
     try:
         record_id = archive_report_to_feishu(task, report_path)
@@ -489,7 +502,7 @@ class InspectionHandler(SimpleHTTPRequestHandler):
         if path.startswith(prefix) and path.endswith("/download"):
             task_id = path[len(prefix) : -len("/download")].strip("/")
             task = next((item for item in read_tasks() if item["id"] == task_id), None)
-            report_path = Path(task["reportPath"]) if task and task.get("reportPath") else None
+            report_path = resolve_report_path(task) if task else None
             if not report_path or not report_path.exists():
                 self.send_json({"message": "报告尚未生成"}, status=404)
                 return
@@ -538,7 +551,8 @@ class InspectionHandler(SimpleHTTPRequestHandler):
             if not task:
                 self.send_json({"message": "任务不存在"}, status=404)
                 return
-            if not task.get("reportPath") or not Path(task["reportPath"]).exists():
+            report_path = resolve_report_path(task)
+            if not report_path or not report_path.exists():
                 self.send_json({"message": "报告文件尚未生成"}, status=409)
                 return
             update_task(task_id, feishuSyncStatus="归档中", feishuError="")
