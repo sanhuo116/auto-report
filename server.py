@@ -28,6 +28,9 @@ DEFAULT_FEISHU_BASE_TOKEN = "PAzTbBX7EamTfzs9aXzcWBaanZe"
 DEFAULT_FEISHU_TABLE_ID = "tblfCjtJ4uImwNyi"
 DEFAULT_FEISHU_VIEW_ID = "vew4bWEOlm"
 DEFAULT_FEISHU_REPORT_FIELD_ID = "fld4ab4qf8"
+DEFAULT_FEISHU_TENANT_FIELD = "租户名称"
+DEFAULT_FEISHU_PERIOD_FIELD = "巡检报告周期"
+DEFAULT_FEISHU_REPORT_FIELD = "巡检报告"
 LARK_CLI_BIN = os.environ.get("FEISHU_CLI_BIN", "").strip() or shutil.which("lark-cli") or next(
     (
         str(path)
@@ -184,6 +187,24 @@ def feishu_request(
 def feishu_destination(task: dict) -> dict:
     destination = parse_object(task.get("feishuDestination"))
     fields = destination.get("fields") if isinstance(destination.get("fields"), dict) else {}
+    tenant_field = (
+        os.environ.get("FEISHU_FIELD_TENANT", "").strip()
+        or fields.get("tenant")
+        or DEFAULT_FEISHU_TENANT_FIELD
+    )
+    period_field = (
+        os.environ.get("FEISHU_FIELD_PERIOD", "").strip()
+        or fields.get("period")
+        or DEFAULT_FEISHU_PERIOD_FIELD
+    )
+    report_field = (
+        os.environ.get("FEISHU_FIELD_REPORT", "").strip()
+        or fields.get("report")
+        or DEFAULT_FEISHU_REPORT_FIELD
+    )
+    # Older tasks used "客户名称"; the current target table uses "租户名称".
+    if tenant_field == "客户名称":
+        tenant_field = DEFAULT_FEISHU_TENANT_FIELD
     return {
         "base_token": os.environ.get("FEISHU_BASE_TOKEN", "").strip()
         or destination.get("baseToken")
@@ -200,15 +221,9 @@ def feishu_destination(task: dict) -> dict:
         "cli_bin": LARK_CLI_BIN,
         "cli_profile": os.environ.get("FEISHU_CLI_PROFILE", "").strip(),
         "fields": {
-            "tenant": os.environ.get("FEISHU_FIELD_TENANT", "").strip()
-            or fields.get("tenant")
-            or "客户名称",
-            "period": os.environ.get("FEISHU_FIELD_PERIOD", "").strip()
-            or fields.get("period")
-            or "巡检报告周期",
-            "report": os.environ.get("FEISHU_FIELD_REPORT", "").strip()
-            or fields.get("report")
-            or "巡检报告",
+            "tenant": tenant_field,
+            "period": period_field,
+            "report": report_field,
         },
     }
 
