@@ -318,55 +318,54 @@ def add_message(draw, y, row, user_font, bot_font, text_font, width):
     a = str(row["答案"] or "")
     match = str(row["匹配项"] or "")
     draw.text((478, y), f"{date_text}  {msg_id[-6:]}", fill=(120, 125, 135), font=text_font)
-    y += 31
-    q_lines = wrap_text(draw, q, user_font, 510)
-    q_h = max(54, 28 * len(q_lines) + 24)
-    draw.rounded_rectangle((478, y, 478 + min(width, 550), y + q_h), radius=12, fill=(218, 235, 255))
+    y += 23
+    q_lines = wrap_text(draw, q, user_font, 520)
+    q_h = max(42, 20 * len(q_lines) + 18)
+    draw.rounded_rectangle((478, y, 478 + min(width, 550), y + q_h), radius=10, fill=(218, 235, 255))
     draw.text((500, y + 10), "用户", fill=(44, 92, 153), font=text_font)
     for idx, line in enumerate(q_lines):
-        draw.text((500, y + 36 + idx * 27), line, fill=(40, 50, 65), font=user_font)
-    y += q_h + 14
-    a_lines = wrap_text(draw, a if a != "-" else "未形成有效回复（答案为 - ）", bot_font, 560)
-    a_h = max(58, 28 * len(a_lines) + 25)
-    draw.rounded_rectangle((770, y, 1375, y + a_h), radius=12, fill=(255, 255, 255), outline=(126, 166, 232), width=2)
-    draw.text((790, y + 10), "杭州社保", fill=(52, 104, 185), font=text_font)
+        draw.text((500, y + 28 + idx * 20), line, fill=(40, 50, 65), font=user_font)
+    y += q_h + 7
+    a_lines = wrap_text(draw, a if a != "-" else "未形成有效回复（答案为 - ）", bot_font, 575)
+    a_h = max(44, 20 * len(a_lines) + 18)
+    draw.rounded_rectangle((770, y, 1375, y + a_h), radius=10, fill=(255, 255, 255), outline=(126, 166, 232), width=2)
+    draw.text((790, y + 9), "杭州社保", fill=(52, 104, 185), font=text_font)
     for idx, line in enumerate(a_lines):
-        draw.text((790, y + 36 + idx * 27), line, fill=(55, 55, 65), font=bot_font)
-    draw.text((478, y + a_h + 8), f"匹配项：{match}", fill=(145, 150, 160), font=text_font)
-    return y + a_h + 48
+        draw.text((790, y + 27 + idx * 20), line, fill=(55, 55, 65), font=bot_font)
+    draw.text((478, y + a_h + 5), f"匹配项：{match}", fill=(145, 150, 160), font=text_font)
+    return y + a_h + 31
 
 
 def make_case_screenshot(case, grouped):
     rows = grouped[case["id"]]
-    user_font = image_font(19)
-    bot_font = image_font(18)
-    text_font = image_font(16)
-    header_font = image_font(25, True)
-    y = 106
+    user_font = image_font(15)
+    bot_font = image_font(14)
+    text_font = image_font(13)
+    header_font = image_font(22, True)
     heights = []
     dummy = Image.new("RGB", (1440, 500), "white")
     dd = ImageDraw.Draw(dummy)
     for row in rows:
-        q_lines = wrap_text(dd, str(row["用户问句"] or ""), user_font, 510)
+        q_lines = wrap_text(dd, str(row["用户问句"] or ""), user_font, 520)
         a = str(row["答案"] or "")
-        a_lines = wrap_text(dd, a if a != "-" else "未形成有效回复（答案为 - ）", bot_font, 560)
-        heights.append(31 + max(54, 28 * len(q_lines) + 24) + 14 + max(58, 28 * len(a_lines) + 25) + 48)
-    h = max(780, 150 + sum(heights))
+        a_lines = wrap_text(dd, a if a != "-" else "未形成有效回复（答案为 - ）", bot_font, 575)
+        heights.append(23 + max(42, 20 * len(q_lines) + 18) + 7 + max(44, 20 * len(a_lines) + 18) + 31)
+    h = max(650, 118 + sum(heights))
     im = Image.new("RGB", (1440, h), (246, 248, 252))
     d = ImageDraw.Draw(im)
     d.rectangle((0, 0, 410, h), fill=(229, 233, 240))
     d.rectangle((0, 0, 1440, 76), fill=(255, 255, 255))
     d.line((0, 76, 1440, 76), fill=(220, 225, 232), width=2)
-    d.text((34, 22), "会话巡检", fill=(48, 52, 60), font=header_font)
-    d.text((475, 20), "会话详情", fill=(48, 52, 60), font=header_font)
-    d.text((1120, 23), case["id"], fill=(100, 105, 115), font=text_font)
-    d.rounded_rectangle((25, 110, 385, 188), radius=8, fill=(214, 231, 255), outline=(126, 166, 232), width=2)
-    d.text((48, 127), "杭州社保", fill=(45, 79, 126), font=image_font(20, True))
-    d.text((48, 158), "文本会话记录", fill=(100, 110, 125), font=text_font)
-    d.text((32, 220), "会话ID", fill=(100, 105, 115), font=text_font)
-    d.text((32, 250), case["id"], fill=(45, 79, 126), font=image_font(17))
+    d.text((34, 20), "会话巡检", fill=(48, 52, 60), font=header_font)
+    d.text((475, 18), "会话详情", fill=(48, 52, 60), font=header_font)
+    d.text((1120, 21), case["id"], fill=(100, 105, 115), font=text_font)
+    d.rounded_rectangle((25, 88, 385, 154), radius=8, fill=(214, 231, 255), outline=(126, 166, 232), width=2)
+    d.text((48, 103), "杭州社保", fill=(45, 79, 126), font=image_font(17, True))
+    d.text((48, 129), "文本会话记录", fill=(100, 110, 125), font=text_font)
+    d.text((32, 178), "会话ID", fill=(100, 105, 115), font=text_font)
+    d.text((32, 202), case["id"], fill=(45, 79, 126), font=image_font(14))
     d.line((430, 90, 430, h - 24), fill=(220, 225, 232), width=2)
-    y = 108
+    y = 90
     for row in rows:
         y = add_message(d, y, row, user_font, bot_font, text_font, 550)
     d.text((478, h - 26), "完整会话内容", fill=(150, 155, 165), font=text_font)
