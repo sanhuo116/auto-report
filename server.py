@@ -298,6 +298,11 @@ def archive_report_to_feishu(task: dict, report_path: Path) -> str:
             raise RuntimeError("飞书 CLI 创建记录成功但未返回记录 ID")
         update_task(task["id"], feishuRecordId=record_id)
 
+    try:
+        cli_report_path = report_path.resolve().relative_to(ROOT.resolve())
+    except ValueError as error:
+        raise RuntimeError("报告文件必须位于巡检平台运行目录内，无法交给飞书 CLI 上传") from error
+
     lark_cli_json(
         config,
         [
@@ -312,7 +317,7 @@ def archive_report_to_feishu(task: dict, report_path: Path) -> str:
             "--field-id",
             config["report_field_id"],
             "--file",
-            str(report_path),
+            str(cli_report_path),
         ],
     )
     return record_id
